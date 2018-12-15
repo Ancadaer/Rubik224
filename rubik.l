@@ -1,15 +1,18 @@
 %{
 	unsigned moveCount = 0; unsigned notMoveCount = 0;
 %}
-move [ulfrbd]"i"?"'"?
-notMove [^ulfrbd]
-%%
-{move} {moveCount++;}
-{notMove} {notMoveCount++;}
+move [ulfrbd]"i"?"'"?" "
+eol \n
 
 %%
-void main()
+Move {moveCount+=10;;}
+{move} {moveCount++;}
+. {notMoveCount++;}
+{eol} {notMoveCount++;}
+
+%%
+int main()
 {
 	yylex();
-	printf("%d movimientos\n", moveCount);
+	printf("%d movimientos, %d no movimientos.\n", moveCount, notMoveCount);
 }

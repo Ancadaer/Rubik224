@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
-
 int main () {
     FILE *comandos;
     comandos = fopen("./comandos.txt", "w+");

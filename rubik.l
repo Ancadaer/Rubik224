@@ -1,20 +1,17 @@
 %{
-	unsigned moveCount = 0; unsigned notMoveCount = 0;
+#include <stdlib.h>
+#include "temperatura.tab.h"
 %}
 move [ulfrbd]"i"?"'"?
 
 %%
-Move 				printf("Realizar movimiento\n");
-Command				printf("Introducir comando\n");
-exit				printf("Salir\n");
-scramble			printf("Deshacer\n");
-solved				printf("Mostrar resuelto\n");
-solve 				printf("Resolver\n");
-{move}(" "{move})*	moveCount++; ECHO; printf("\n");
+Move				{return MOVE;}
+Command				{return COMMAND;}
+exit				{return EXIT;}
+scramble			{return SCRAMBLE;}
+solved				{return SOLVED;}
+solve 				{return SOLVE;}
+{move}(" "{move})*	{yylval->strval=strdup(yytext); return(MOVEMENT	);}
 [" "|\t|\n]* 
 
 %%
-int main()
-{
-	yylex();
-}

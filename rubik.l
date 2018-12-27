@@ -1,8 +1,8 @@
 %{
 #include <stdlib.h>
-#include "temperatura.tab.h"
+#include "rubik.tab.h"
 %}
-move [ulfrbd]"i"?"'"?
+movement [ulfrbd]"i"?"'"?
 
 %%
 Move				{return MOVE;}
@@ -11,7 +11,7 @@ exit				{return EXIT;}
 scramble			{return SCRAMBLE;}
 solved				{return SOLVED;}
 solve 				{return SOLVE;}
-{move}(" "{move})*	{yylval->strval=strdup(yytext); return(MOVEMENT	);}
+{movement}			{return MOVEMENT;}
 [" "|\t|\n]* 
 
 %%

@@ -1,7 +1,1 @@
-<<<<<<< HEAD
-r fi r' a r r2
-=======
-r fi r'   
- Move    a r r 
- 2   
->>>>>>> 60cf14454846b6d5078d966f7c6c6c11d3595cd5
+Command scramble

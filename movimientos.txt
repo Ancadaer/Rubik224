@@ -1,1 +1,3 @@
-Command scramble
+create test.txt
+move test.txt ui
+exit

@@ -120,7 +120,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 15 "rubik_usuario.y" /* yacc.c:1909  */
+#line 18 "rubik_usuario.y" /* yacc.c:1909  */
 
 	char * valString;
 	int valInt;

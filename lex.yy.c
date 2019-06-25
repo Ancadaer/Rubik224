@@ -877,7 +877,7 @@ YY_RULE_SETUP
 case 22:
 YY_RULE_SETUP
 #line 32 "rubik_usuario.l"
-{return LPRIME;}   
+{return LPRIME;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
@@ -1951,6 +1951,5 @@ void yyfree (void * ptr )
 #define YYTABLES_NAME "yytables"
 
 #line 48 "rubik_usuario.l"
-
 
 

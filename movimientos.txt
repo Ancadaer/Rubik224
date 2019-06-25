@@ -1,3 +1,2 @@
-create test.txt
-move test.txt ui
-exit
+reset test.txt
+reset gasdga.txt

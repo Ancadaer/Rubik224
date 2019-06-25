@@ -2,11 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 void yyerror (char const *);
 void yyerrorCmd (char *);
 int yylex();
 void create224Configuration (char *);
+void scrambleN(char * , int);
+int exitsFile(char *);
 void exitRubik();
 void uiMove(char * file);
 void append(char* s, char c);
@@ -18,7 +21,7 @@ char * file;
 }
 %error-verbose
 %token <valString> MOVE EXITR SCRAMBLE SOLVED SOLVE RESET CREATE
-%token <valString> UIPRIME UI UPRIME U RIPRIME RI RPRIME R BIPRIME BI BPRIME B 
+%token <valString> UIPRIME UI UPRIME U RIPRIME RI RPRIME R BIPRIME BI BPRIME B
 %token <valString> LIPRIME LI LPRIME L FIPRIME FI FPRIME F DIPRIME DI DPRIME D
 %token <valString> MYFILE
 %token <valInt> TIMES
@@ -28,27 +31,26 @@ char * file;
 %%
 
 S:  lista_cmds
-	| error {yyerrorCmd("There are no commands.");}	
 ;
 lista_cmds : cmd lista_cmds
 			| cmd
 ;
 
-cmd : CREATE MYFILE {create224Configuration($2);}
-		|RESET MYFILE 
+cmd : CREATE MYFILE {if (!exitsFile($2)) create224Configuration($2); else yyerrorCmd("Can't create file, it already exists.\n");}
+		|RESET MYFILE {if (exitsFile($2)) create224Configuration($2); else yyerrorCmd("Can't reset file, it doesn't exist.\n");}
 		|SCRAMBLE TIMES MYFILE
 		|SOLVED MYFILE
 		|SOLVE MYFILE
-		|MOVE MYFILE {file = strdup($2);} lista_movs 
+		|MOVE MYFILE {file = strdup($2);} lista_movs
 		|EXITR {exitRubik();}
-		|error {yyerrorCmd("There are no commands.");}
+		|error {yyerrorCmd("Wrong command.");}
 ;
 
 lista_movs : mov lista_movs
 			| mov
 ;
 
-mov: UIPRIME | UI {uiMove(file);} | UPRIME | U | RIPRIME | RI | RPRIME | R | BIPRIME | BI | BPRIME | B 
+mov: UIPRIME | UI {uiMove(file);} | UPRIME | U | RIPRIME | RI | RPRIME | R | BIPRIME | BI | BPRIME | B
 	| LIPRIME | LI | LPRIME | L | FIPRIME | FI | FPRIME | F | DIPRIME | DI | DPRIME | D
 ;
 
@@ -73,9 +75,32 @@ void create224Configuration (char * file) {
 
 	while((ch = fgetc(source)) != EOF)
       fputc(ch, target);
- 
+
    fclose(source);
    fclose(target);
+}
+
+
+
+
+void scrambleN(char * file, int n) {
+	/*De momento declaro j para hacer algo en el for
+		lo sustituiria el hacer un movimiento aleatorio una vez esten hechos
+	*/
+	int j = 0;
+	for (int i = 0; i <= n; i++) {
+		j++;
+
+	}
+
+}
+
+int exitsFile(char * file) {
+	if (access(file, F_OK) != -1)
+		return 1;
+	else
+		return 0;
+
 }
 
 
@@ -84,12 +109,14 @@ void exitRubik(){
 	exit(0);
 }
 
+
 void uiMove(char * file) {
 	char configuracion [1000];
 	FILE *source;
 	char ch, tmp1;
 	source = fopen("./resources/conf.txt", "r");
-	while ((ch = fgetc(source)) != EOF) append(configuracion, ch);
+	while ((ch = fgetc(source)) != EOF)
+		append(configuracion, ch);
 
 	tmp1 = configuracion[6];
 	configuracion[6] = configuracion[11];
@@ -119,7 +146,7 @@ void uiMove(char * file) {
 	FILE *target;
 	target = fopen(file, "w");
 
-	fprintf(target, "%s", configuracion);
+	fprintf(target, "%s\n", configuracion);
 }
 
 void append(char* s, char c){

@@ -67,17 +67,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 void yyerror (char const *);
 void yyerrorCmd (char *);
 int yylex();
 void create224Configuration (char *);
+void scrambleN(char * , int);
+int exitsFile(char *);
 void exitRubik();
 void uiMove(char * file);
 void append(char* s, char c);
 char * file;
 
-#line 81 "rubik_usuario.tab.c" /* yacc.c:339  */
+#line 84 "rubik_usuario.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -187,12 +190,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 15 "rubik_usuario.y" /* yacc.c:355  */
+#line 18 "rubik_usuario.y" /* yacc.c:355  */
 
 	char * valString;
 	int valInt;
 
-#line 196 "rubik_usuario.tab.c" /* yacc.c:355  */
+#line 199 "rubik_usuario.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -209,7 +212,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 213 "rubik_usuario.tab.c" /* yacc.c:358  */
+#line 216 "rubik_usuario.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -451,16 +454,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  18
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   51
+#define YYLAST   50
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  36
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  7
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  40
+#define YYNRULES  39
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  50
+#define YYNSTATES  49
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -510,11 +513,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    30,    30,    31,    33,    34,    37,    38,    39,    40,
-      41,    42,    42,    43,    44,    47,    48,    51,    51,    51,
-      51,    51,    51,    51,    51,    51,    51,    51,    51,    52,
-      52,    52,    52,    52,    52,    52,    52,    52,    52,    52,
-      52
+       0,    33,    33,    35,    36,    39,    40,    41,    42,    43,
+      44,    44,    45,    46,    49,    50,    53,    53,    53,    53,
+      53,    53,    53,    53,    53,    53,    53,    53,    54,    54,
+      54,    54,    54,    54,    54,    54,    54,    54,    54,    54
 };
 #endif
 
@@ -549,7 +551,7 @@ static const yytype_uint16 yytoknum[] =
 #define yypact_value_is_default(Yystate) \
   (!!((Yystate) == (-11)))
 
-#define YYTABLE_NINF -6
+#define YYTABLE_NINF -5
 
 #define yytable_value_is_error(Yytable_value) \
   0
@@ -558,11 +560,11 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      33,    26,     1,   -11,     8,    10,    11,    12,    13,    48,
-     -11,    24,   -11,    15,   -11,   -11,   -11,   -11,   -11,   -11,
-     -11,   -10,   -11,   -11,   -11,   -11,   -11,   -11,   -11,   -11,
+      33,   -11,    -8,   -11,     0,     9,    10,    11,    12,    47,
+     -11,    24,   -11,    14,   -11,   -11,   -11,   -11,   -11,   -11,
+     -10,   -11,   -11,   -11,   -11,   -11,   -11,   -11,   -11,   -11,
      -11,   -11,   -11,   -11,   -11,   -11,   -11,   -11,   -11,   -11,
-     -11,   -11,   -11,   -11,   -11,   -11,   -11,   -11,   -10,   -11
+     -11,   -11,   -11,   -11,   -11,   -11,   -11,   -10,   -11
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -570,23 +572,23 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    14,     0,    13,     0,     0,     0,     0,     0,     0,
-       2,     0,    11,     0,     9,    10,     7,     6,     1,    14,
-       4,     0,     8,    17,    18,    19,    20,    21,    22,    23,
+       0,    13,     0,    12,     0,     0,     0,     0,     0,     0,
+       2,     0,    10,     0,     8,     9,     6,     5,     1,     3,
+       0,     7,    16,    17,    18,    19,    20,    21,    22,    23,
       24,    25,    26,    27,    28,    29,    30,    31,    32,    33,
-      34,    35,    36,    37,    38,    39,    40,    12,    16,    15
+      34,    35,    36,    37,    38,    39,    11,    15,    14
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -11,   -11,    39,   -11,   -11,     3,   -11
+     -11,   -11,    38,   -11,   -11,     3,   -11
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     9,    10,    11,    21,    47,    48
+      -1,     9,    10,    11,    20,    46,    47
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -594,22 +596,22 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      23,    24,    25,    26,    27,    28,    29,    30,    31,    32,
-      33,    34,    35,    36,    37,    38,    39,    40,    41,    42,
-      43,    44,    45,    46,    -5,    19,    -3,     2,     3,     4,
-       5,     6,     7,     8,     1,    12,     2,     3,     4,     5,
-       6,     7,     8,    13,    14,    15,    16,    17,    18,    22,
-      20,    49
+      22,    23,    24,    25,    26,    27,    28,    29,    30,    31,
+      32,    33,    34,    35,    36,    37,    38,    39,    40,    41,
+      42,    43,    44,    45,    -4,     1,    12,     2,     3,     4,
+       5,     6,     7,     8,     1,    13,     2,     3,     4,     5,
+       6,     7,     8,    14,    15,    16,    17,    18,    21,    19,
+      48
 };
 
 static const yytype_uint8 yycheck[] =
 {
       10,    11,    12,    13,    14,    15,    16,    17,    18,    19,
       20,    21,    22,    23,    24,    25,    26,    27,    28,    29,
-      30,    31,    32,    33,     0,     1,     0,     3,     4,     5,
-       6,     7,     8,     9,     1,    34,     3,     4,     5,     6,
-       7,     8,     9,    35,    34,    34,    34,    34,     0,    34,
-      11,    48
+      30,    31,    32,    33,     0,     1,    34,     3,     4,     5,
+       6,     7,     8,     9,     1,    35,     3,     4,     5,     6,
+       7,     8,     9,    34,    34,    34,    34,     0,    34,    11,
+      47
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -617,30 +619,28 @@ static const yytype_uint8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,     1,     3,     4,     5,     6,     7,     8,     9,    37,
-      38,    39,    34,    35,    34,    34,    34,    34,     0,     1,
-      38,    40,    34,    10,    11,    12,    13,    14,    15,    16,
-      17,    18,    19,    20,    21,    22,    23,    24,    25,    26,
-      27,    28,    29,    30,    31,    32,    33,    41,    42,    41
+      38,    39,    34,    35,    34,    34,    34,    34,     0,    38,
+      40,    34,    10,    11,    12,    13,    14,    15,    16,    17,
+      18,    19,    20,    21,    22,    23,    24,    25,    26,    27,
+      28,    29,    30,    31,    32,    33,    41,    42,    41
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    36,    37,    37,    38,    38,    39,    39,    39,    39,
-      39,    40,    39,    39,    39,    41,    41,    42,    42,    42,
+       0,    36,    37,    38,    38,    39,    39,    39,    39,    39,
+      40,    39,    39,    39,    41,    41,    42,    42,    42,    42,
       42,    42,    42,    42,    42,    42,    42,    42,    42,    42,
-      42,    42,    42,    42,    42,    42,    42,    42,    42,    42,
-      42
+      42,    42,    42,    42,    42,    42,    42,    42,    42,    42
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     1,     2,     1,     2,     2,     3,     2,
-       2,     0,     4,     1,     1,     2,     1,     1,     1,     1,
+       0,     2,     1,     2,     1,     2,     2,     3,     2,     2,
+       0,     4,     1,     1,     2,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1
 };
 
 
@@ -1316,38 +1316,38 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 3:
-#line 31 "rubik_usuario.y" /* yacc.c:1646  */
-    {yyerrorCmd("There are no commands.");}
+        case 5:
+#line 39 "rubik_usuario.y" /* yacc.c:1646  */
+    {if (!exitsFile((yyvsp[0].valString))) create224Configuration((yyvsp[0].valString)); else yyerrorCmd("Can't create file %s, it already exists.\n");}
 #line 1323 "rubik_usuario.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 37 "rubik_usuario.y" /* yacc.c:1646  */
-    {create224Configuration((yyvsp[0].valString));}
+#line 40 "rubik_usuario.y" /* yacc.c:1646  */
+    {if (exitsFile((yyvsp[0].valString))) create224Configuration((yyvsp[0].valString)); else yyerrorCmd("Can't reset file, it doesn't exist.\n");}
 #line 1329 "rubik_usuario.tab.c" /* yacc.c:1646  */
     break;
 
-  case 11:
-#line 42 "rubik_usuario.y" /* yacc.c:1646  */
+  case 10:
+#line 44 "rubik_usuario.y" /* yacc.c:1646  */
     {file = strdup((yyvsp[0].valString));}
 #line 1335 "rubik_usuario.tab.c" /* yacc.c:1646  */
     break;
 
-  case 13:
-#line 43 "rubik_usuario.y" /* yacc.c:1646  */
+  case 12:
+#line 45 "rubik_usuario.y" /* yacc.c:1646  */
     {exitRubik();}
 #line 1341 "rubik_usuario.tab.c" /* yacc.c:1646  */
     break;
 
-  case 14:
-#line 44 "rubik_usuario.y" /* yacc.c:1646  */
-    {yyerrorCmd("There are no commands.");}
+  case 13:
+#line 46 "rubik_usuario.y" /* yacc.c:1646  */
+    {yyerrorCmd("Wrong command.");}
 #line 1347 "rubik_usuario.tab.c" /* yacc.c:1646  */
     break;
 
-  case 18:
-#line 51 "rubik_usuario.y" /* yacc.c:1646  */
+  case 17:
+#line 53 "rubik_usuario.y" /* yacc.c:1646  */
     {uiMove(file);}
 #line 1353 "rubik_usuario.tab.c" /* yacc.c:1646  */
     break;
@@ -1581,7 +1581,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 55 "rubik_usuario.y" /* yacc.c:1906  */
+#line 57 "rubik_usuario.y" /* yacc.c:1906  */
 
 
 int main() {
@@ -1603,9 +1603,32 @@ void create224Configuration (char * file) {
 
 	while((ch = fgetc(source)) != EOF)
       fputc(ch, target);
- 
+
    fclose(source);
    fclose(target);
+}
+
+
+
+
+void scrambleN(char * file, int n) {
+	/*De momento declaro j para hacer algo en el for
+		lo sustituiria el hacer un movimiento aleatorio una vez esten hechos
+	*/
+	int j = 0;
+	for (int i = 0; i <= n; i++) {
+		j++;
+
+	}
+
+}
+
+int exitsFile(char * file) {
+	if (access(file, F_OK) != -1)
+		return 1;
+	else
+		return 0;
+
 }
 
 
@@ -1614,12 +1637,14 @@ void exitRubik(){
 	exit(0);
 }
 
+
 void uiMove(char * file) {
 	char configuracion [1000];
 	FILE *source;
 	char ch, tmp1;
 	source = fopen("./resources/conf.txt", "r");
-	while ((ch = fgetc(source)) != EOF) append(configuracion, ch);
+	while ((ch = fgetc(source)) != EOF)
+		append(configuracion, ch);
 
 	tmp1 = configuracion[6];
 	configuracion[6] = configuracion[11];
@@ -1649,7 +1674,7 @@ void uiMove(char * file) {
 	FILE *target;
 	target = fopen(file, "w");
 
-	fprintf(target, "%s", configuracion);
+	fprintf(target, "%s\n", configuracion);
 }
 
 void append(char* s, char c){

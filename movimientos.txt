@@ -1,2 +1,2 @@
 reset test.txt
-reset gasdga.txt
+move test.txt d

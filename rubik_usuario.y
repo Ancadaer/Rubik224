@@ -11,6 +11,15 @@ void create224Configuration (char *);
 void scrambleN(char * , int);
 int exitsFile(char *);
 void exitRubik();
+
+void riMove(char * file);
+void riPrimeMove(char * file);
+void rMove(char * file);
+void rPrimeMove(char * file);
+void liMove(char * file);
+void liPrimeMove(char * file);
+void lMove(char * file);
+void lPrimeMove(char * file);
 void uiMove(char * file);
 void uiPrimeMove(char * file);
 void uMove(char * file);
@@ -19,11 +28,21 @@ void diMove(char * file);
 void diPrimeMove(char * file);
 void dMove(char * file);
 void dPrimeMove(char * file);
-void movement(char* file, int start, int times, int axis, int doBoth);
-void xAxisLowRotation(char* configuracion, int start, int times, int doBoth);
-void xAxisHighRotation(char* configuracion, int start, int times, int doBoth);
-void yAxisLowRotation(char* configuracion, int start, int times, int doBoth);
-void yAxisHighRotation(char* configuracion, int start, int times, int doBoth);
+void fiMove(char * file);
+void fiPrimeMove(char * file);
+void fMove(char * file);
+void fPrimeMove(char * file);
+void biMove(char * file);
+void biPrimeMove(char * file);
+void bMove(char * file);
+void bPrimeMove(char * file);
+void movement(char* file, int start, int times, int axis, int inRotation);
+
+void xAxisRotation(char* configuracion, int start, int times, int inRotation);
+void yAxisRotation(char* configuracion, int start, int times, int inRotation);
+void zAxisRotation(char* configuracion, int start, int times, int inRotation);
+void faceRotation(char* configuracion, int start);
+
 void getConfiguracion(char* configuracion, char* file);
 void printConfiguracion(char* configuracion, char* file);
 void append(char* s, char c);
@@ -66,8 +85,10 @@ lista_movs : mov lista_movs
 
 mov: UIPRIME {uiPrimeMove(file);} | UI {uiMove(file);} | UPRIME {uPrimeMove(file);} | U {uMove(file);} 
 	| DIPRIME {diPrimeMove(file);} | DI {diMove(file);} | DPRIME {dPrimeMove(file);} | D {dMove(file);}
-	| RIPRIME | RI | RPRIME | R | BIPRIME | BI | BPRIME | B
-	| LIPRIME | LI | LPRIME | L | FIPRIME | FI | FPRIME | F 
+	| RIPRIME {riPrimeMove(file);} | RI {riMove(file);} | RPRIME {rPrimeMove(file);} | R {rMove(file);} 
+	| LIPRIME {liPrimeMove(file);} | LI {liMove(file);} | LPRIME {lPrimeMove(file);} | L {lMove(file);} 
+	| FIPRIME {fiPrimeMove(file);} | FI {fiMove(file);} | FPRIME {fPrimeMove(file);} | F {fMove(file);} 
+	| BIPRIME {biPrimeMove(file);} | BI {biMove(file);} | BPRIME {bPrimeMove(file);} | B {bMove(file);} 
 ;
 
 %%
@@ -125,67 +146,193 @@ void exitRubik(){
 	exit(0);
 }
 
+/****************************************
+Funciones para movimientos posibles
+****************************************/
 
-void uiMove(char * file) { movement(file, 6, 1, 1, 1);}
+// Eje x
+void riMove(char * file) { 
+	movement(file, 12, 1, 1, 1);
+	movement(file, 13, 1, 1, 0);
+}
 
-void uiPrimeMove(char * file) { movement(file, 6, 3, 1, 1);}
+void riPrimeMove(char * file) { 
+	movement(file, 12, 3, 1, 1);
+	movement(file, 13, 3, 1, 0);
+}
 
-void uMove(char * file) { movement(file, 6, 1, 2, 0);}
+void rMove(char * file) { 
+	movement(file, 13, 1, 1, 0);
+}
 
-void uPrimeMove(char * file) { movement(file, 6, 3, 2, 0);}
+void rPrimeMove(char * file) { 
+	movement(file, 13, 3, 1, 0);
+}
 
-void diMove(char * file) { movement(file, 66, 3, 1, 1);}
+void liMove(char * file) { 
+	movement(file, 11, 3, 1, 1);
+	movement(file, 10, 3, 1, 0);
+}
 
-void diPrimeMove(char * file) { movement(file, 66, 1, 1, 1);}
+void liPrimeMove(char * file) { 
+	movement(file, 11, 1, 1, 1);
+	movement(file, 10, 1, 1, 0);
+}
 
-void dMove(char * file) { movement(file, 66, 3, 1, 0);}
+void lMove(char * file) { 
+	movement(file, 10, 3, 1, 0);
+}
 
-void dPrimeMove(char * file) { movement(file, 66, 1, 1, 0);}
+void lPrimeMove(char * file) { 
+	movement(file, 10, 1, 1, 0);
+}
 
-void movement(char* file, int start, int times, int axis, int doBoth) {
-	char configuracion [1000];
+// Eje y
+void uiMove(char * file) { 
+	movement(file, 36, 1, 2, 1);
+	movement(file, 6, 1, 2, 0);
+}
+
+void uiPrimeMove(char * file) { 
+	movement(file, 36, 3, 2, 1);
+	movement(file, 6, 3, 2, 0);
+}
+
+void uMove(char * file) { 
+	movement(file, 6, 1, 2, 0);
+}
+
+void uPrimeMove(char * file) { 
+	movement(file, 6, 3, 2, 0);
+}
+
+void diMove(char * file) { 
+	movement(file, 66, 3, 2, 1);
+	movement(file, 96, 3, 2, 0);
+}
+
+void diPrimeMove(char * file) { 
+	movement(file, 66, 1, 2, 1);
+	movement(file, 96, 1, 2, 0);
+}
+
+void dMove(char * file) { 
+	movement(file, 66, 3, 2, 0);
+}
+
+void dPrimeMove(char * file) { 
+	movement(file, 66, 1, 2, 0);
+}
+
+// Eje z
+void fiMove(char * file) { 
+	//movement(file, 6, 1, 3, 1);
+	movement(file, 5, 1, 3, 0);
+}
+
+void fiPrimeMove(char * file) { 
+	movement(file, 6, 3, 3, 1);
+	movement(file, 5, 3, 3, 0);
+}
+
+void fMove(char * file) { 
+	movement(file, 5, 1, 3, 0);
+}
+
+void fPrimeMove(char * file) { 
+	movement(file, 5, 3, 3, 0);
+}
+
+void biMove(char * file) { 
+	movement(file, 66, 3, 3, 1);
+	movement(file, 96, 3, 3, 0);
+}
+
+void biPrimeMove(char * file) { 
+	movement(file, 66, 1, 3, 1);
+	movement(file, 96, 1, 3, 0);
+}
+
+void bMove(char * file) { 
+	movement(file, 66, 3, 3, 0);
+}
+
+void bPrimeMove(char * file) { 
+	movement(file, 66, 1, 3, 0);
+}
+
+
+void movement(char* file, int start, int times, int axis, int inRotation) {
+	char configuracion [200];
 	getConfiguracion(configuracion, file);
 	switch(axis){
-		case 1: xAxisLowRotation(configuracion, start, times, doBoth);
+		case 1: xAxisRotation(configuracion, start, times, inRotation);
 			break;
-		case 2: xAxisHighRotation(configuracion, start, times, doBoth);
+		case 2: yAxisRotation(configuracion, start, times, inRotation);
 			break;
-		case 3: yAxisLowRotation(configuracion, start, times, doBoth);
-			break;
-		case 4: yAxisHighRotation(configuracion, start, times, doBoth);
-			break;
-		case 5: zAxisLowRotation(configuracion, start, times, doBoth);
-			break;
-		case 6: zAxisHighRotation(configuracion, start, times, doBoth);
+		case 3: zAxisRotation(configuracion, start, times, inRotation);
 			break;
 	}
 	printConfiguracion(configuracion, file);
+	
+	for (int i = 0; i < 200; i++) configuracion[i] = '\0';
 }
 
-void xAxisLowRotation(char* configuracion, int start, int times, int doBoth) {
+/****************************************
+Funciones para rotaciones posibles
+****************************************/
+
+void xAxisRotation(char* configuracion, int start, int times, int inRotation) {
 	char tmp1;
 	
 	for (int i = 1; i <= times; i++) {
+		if (inRotation) {
+			tmp1 = configuracion[start+7];
+			configuracion[start+7] = configuracion[start+22];
+			configuracion[start+22] = configuracion[start+107];
+			configuracion[start+107] = configuracion[start-3];
+			configuracion[start-3] = tmp1;
+		}
+
 		tmp1 = configuracion[start+37];
-		configuracion[start+37] = configuracion[start+42];
-		configuracion[start+42] = configuracion[start+47];
-		configuracion[start+47] = configuracion[start+52];
-		configuracion[start+52] = tmp1;
+		configuracion[start+37] = configuracion[start+52];
+		configuracion[start+52] = configuracion[start+77];
+		configuracion[start+77] = configuracion[start+27];
+		configuracion[start+27] = tmp1;
 
-		tmp1 = configuracion[start+38];
-		configuracion[start+38] = configuracion[start+43];
-		configuracion[start+43] = configuracion[start+48];
-		configuracion[start+48] = configuracion[start+53];
-		configuracion[start+53] = tmp1;
+		tmp1 = configuracion[start+67];
+		configuracion[start+67] = configuracion[start+82];
+		configuracion[start+82] = configuracion[start+47];
+		configuracion[start+47] = configuracion[start+57];
+		configuracion[start+57] = tmp1;
+
+		if (inRotation) {
+			tmp1 = configuracion[start+97];
+			configuracion[start+97] = configuracion[start+112];
+			configuracion[start+112] = configuracion[start+17];
+			configuracion[start+17] = configuracion[start+87];
+			configuracion[start+87] = tmp1;
+		}
+
+		if (!inRotation) {
+			if (start == 13) faceRotation(configuracion, 23);
+			else faceRotation(configuracion, 13);
+		}
 	}
-	
-	if (doBoth)	xAxisHighRotation(configuracion, start, times, 0);
 }
 
-void xAxisHighRotation(char* configuracion, int start, int times, int doBoth) {
+void yAxisRotation(char* configuracion, int start, int times, int inRotation) {
 	char tmp1;
 	
 	for (int i = 1; i <= times; i++) {
+		if (inRotation) {
+			tmp1 = configuracion[start+6];
+			configuracion[start+6] = configuracion[start+11];
+			configuracion[start+11] = configuracion[start+16];
+			configuracion[start+16] = configuracion[start+21];
+			configuracion[start+21] = tmp1;
+		}
+
 		tmp1 = configuracion[start+7];
 		configuracion[start+7] = configuracion[start+12];
 		configuracion[start+12] = configuracion[start+17];
@@ -197,92 +344,84 @@ void xAxisHighRotation(char* configuracion, int start, int times, int doBoth) {
 		configuracion[start+13] = configuracion[start+18];
 		configuracion[start+18] = configuracion[start+23];
 		configuracion[start+23] = tmp1;
-	}
 
-	if (doBoth)	xAxisLowRotation(configuracion, start, times, 0);
+		if (inRotation) {
+			tmp1 = configuracion[start+9];
+			configuracion[start+9] = configuracion[start+14];
+			configuracion[start+14] = configuracion[start+19];
+			configuracion[start+19] = configuracion[start+24];
+			configuracion[start+24] = tmp1;
+		}
+
+		if (!inRotation) {
+			if (start == 6) faceRotation(configuracion, 8);
+			else faceRotation(configuracion, 33);
+		}
+	}
 }
 
-void yAxisLowRotation(char* configuracion, int start, int times, int doBoth) {
+void zAxisRotation(char* configuracion, int start, int times, int inRotation) {
 	char tmp1;
 	
 	for (int i = 1; i <= times; i++) {
+		if (inRotation) {
+			tmp1 = configuracion[start+7];
+			configuracion[start+7] = configuracion[start+27];
+			configuracion[start+27] = configuracion[start+107];
+			configuracion[start+107] = configuracion[start+95];
+			configuracion[start+95] = tmp1;
+		}
+
 		tmp1 = configuracion[start+37];
-		configuracion[start+37] = configuracion[start+42];
-		configuracion[start+42] = configuracion[start+47];
-		configuracion[start+47] = configuracion[start+52];
-		configuracion[start+52] = tmp1;
+		configuracion[start+37] = configuracion[start+28];
+		configuracion[start+28] = configuracion[start+77];
+		configuracion[start+77] = configuracion[start+94];
+		configuracion[start+94] = tmp1;
 
-		tmp1 = configuracion[start+38];
-		configuracion[start+38] = configuracion[start+43];
-		configuracion[start+43] = configuracion[start+48];
-		configuracion[start+48] = configuracion[start+53];
-		configuracion[start+53] = tmp1;
+		tmp1 = configuracion[start+67];
+		configuracion[start+67] = configuracion[start+29];
+		configuracion[start+29] = configuracion[start+47];
+		configuracion[start+47] = configuracion[start+93];
+		configuracion[start+93] = tmp1;
+
+		if (inRotation) {
+			tmp1 = configuracion[start+97];
+			configuracion[start+97] = configuracion[start+30];
+			configuracion[start+30] = configuracion[start+17];
+			configuracion[start+17] = configuracion[start+92];
+			configuracion[start+92] = tmp1;
+		}
+
+		//printf("\n\n%c %c %c %c\n\n", configuracion[start+37],configuracion[start+28],configuracion[start+77],configuracion[start+33]);
+
+		/*if (!inRotation) {
+			if (start == 5) faceRotation(configuracion, 13);
+			else faceRotation(configuracion, 23);
+		}*/
 	}
-	
-	if (doBoth)	yAxisHighRotation(configuracion, start, times, 0);
 }
 
-void yAxisHighRotation(char* configuracion, int start, int times, int doBoth) {
+void faceRotation(char* configuracion, int start) {
 	char tmp1;
 	
-	for (int i = 1; i <= times; i++) {
-		tmp1 = configuracion[start+7];
-		configuracion[start+7] = configuracion[start+12];
-		configuracion[start+12] = configuracion[start+17];
-		configuracion[start+17] = configuracion[start+22];
-		configuracion[start+22] = tmp1;
+	tmp1 = configuracion[start];
+	configuracion[start] = configuracion[start+59];
+	configuracion[start+59] = configuracion[start+91];
+	configuracion[start+91] = configuracion[start+32];
+	configuracion[start+32] = tmp1;
 
-		tmp1 = configuracion[start+8];
-		configuracion[start+8] = configuracion[start+13];
-		configuracion[start+13] = configuracion[start+18];
-		configuracion[start+18] = configuracion[start+23];
-		configuracion[start+23] = tmp1;
-	}
+	tmp1 = configuracion[start+1];
+	configuracion[start+1] = configuracion[start+29];
+	configuracion[start+29] = configuracion[start+90];
+	configuracion[start+90] = configuracion[start+62];
+	configuracion[start+62] = tmp1;
 
-	if (doBoth)	yAxisLowRotation(configuracion, start, times, 0);
+	tmp1 = configuracion[start+30];
+	configuracion[start+30] = configuracion[start+60];
+	configuracion[start+60] = configuracion[start+61];
+	configuracion[start+61] = configuracion[start+31];
+	configuracion[start+31] = tmp1;
 }
-
-void zAxisLowRotation(char* configuracion, int start, int times, int doBoth) {
-	char tmp1;
-	
-	for (int i = 1; i <= times; i++) {
-		tmp1 = configuracion[start+37];
-		configuracion[start+37] = configuracion[start+42];
-		configuracion[start+42] = configuracion[start+47];
-		configuracion[start+47] = configuracion[start+52];
-		configuracion[start+52] = tmp1;
-
-		tmp1 = configuracion[start+38];
-		configuracion[start+38] = configuracion[start+43];
-		configuracion[start+43] = configuracion[start+48];
-		configuracion[start+48] = configuracion[start+53];
-		configuracion[start+53] = tmp1;
-	}
-	
-	if (doBoth)	zAxisHighRotation(configuracion, start, times, 0);
-}
-
-void zAxisHighRotation(char* configuracion, int start, int times, int doBoth) {
-	char tmp1;
-	
-	for (int i = 1; i <= times; i++) {
-		tmp1 = configuracion[start+7];
-		configuracion[start+7] = configuracion[start+12];
-		configuracion[start+12] = configuracion[start+17];
-		configuracion[start+17] = configuracion[start+22];
-		configuracion[start+22] = tmp1;
-
-		tmp1 = configuracion[start+8];
-		configuracion[start+8] = configuracion[start+13];
-		configuracion[start+13] = configuracion[start+18];
-		configuracion[start+18] = configuracion[start+23];
-		configuracion[start+23] = tmp1;
-	}
-
-	if (doBoth)	zAxisLowRotation(configuracion, start, times, 0);
-}
-
-
 
 
 void getConfiguracion(char* configuracion, char* file){
@@ -307,7 +446,7 @@ void printConfiguracion(char* configuracion, char* file){
 	FILE *my_file;
 	my_file = fopen(file, "w");
 
-	printf("%s\n", configuracion+7);
+	printf("%s\n\n", configuracion+7);
 	fprintf(my_file, "%s", configuracion+7);
 
 	fclose(my_file);

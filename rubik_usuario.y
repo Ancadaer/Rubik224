@@ -40,7 +40,10 @@ void movement(char* file, int start, int times, int axis, int inRotation);
 
 void xAxisRotation(char* configuracion, int start, int times, int inRotation);
 void yAxisRotation(char* configuracion, int start, int times, int inRotation);
-void zAxisRotation(char* configuracion, int start, int times, int inRotation);
+void fzAxisRotation(char* configuracion, int start, int times, int inRotation);
+void fizAxisRotation(char* configuracion, int start, int times, int inRotation);
+void bzAxisRotation(char* configuracion, int start, int times, int inRotation);
+void bizAxisRotation(char* configuracion, int start, int times, int inRotation);
 void faceRotation(char* configuracion, int start);
 
 void getConfiguracion(char* configuracion, char* file);
@@ -226,12 +229,12 @@ void dPrimeMove(char * file) {
 
 // Eje z
 void fiMove(char * file) { 
-	//movement(file, 6, 1, 3, 1);
+	movement(file, 6, 1, 4, 1);
 	movement(file, 5, 1, 3, 0);
 }
 
 void fiPrimeMove(char * file) { 
-	movement(file, 6, 3, 3, 1);
+	movement(file, 6, 3, 4, 1);
 	movement(file, 5, 3, 3, 0);
 }
 
@@ -244,21 +247,21 @@ void fPrimeMove(char * file) {
 }
 
 void biMove(char * file) { 
-	movement(file, 66, 3, 3, 1);
-	movement(file, 96, 3, 3, 0);
+	movement(file, 7, 3, 6, 1);
+	movement(file, 8, 3, 5, 0);
 }
 
 void biPrimeMove(char * file) { 
-	movement(file, 66, 1, 3, 1);
-	movement(file, 96, 1, 3, 0);
+	movement(file, 7, 1, 6, 1);
+	//movement(file, 8, 1, 5, 0);
 }
 
 void bMove(char * file) { 
-	movement(file, 66, 3, 3, 0);
+	movement(file, 8, 3, 5, 0);
 }
 
 void bPrimeMove(char * file) { 
-	movement(file, 66, 1, 3, 0);
+	movement(file, 8, 1, 5, 0);
 }
 
 
@@ -270,7 +273,13 @@ void movement(char* file, int start, int times, int axis, int inRotation) {
 			break;
 		case 2: yAxisRotation(configuracion, start, times, inRotation);
 			break;
-		case 3: zAxisRotation(configuracion, start, times, inRotation);
+		case 3: fzAxisRotation(configuracion, start, times, inRotation);
+			break;
+		case 4: fizAxisRotation(configuracion, start, times, inRotation);
+			break;
+		case 5: bzAxisRotation(configuracion, start, times, inRotation);
+			break;
+		case 6: bizAxisRotation(configuracion, start, times, inRotation);
 			break;
 	}
 	printConfiguracion(configuracion, file);
@@ -360,18 +369,11 @@ void yAxisRotation(char* configuracion, int start, int times, int inRotation) {
 	}
 }
 
-void zAxisRotation(char* configuracion, int start, int times, int inRotation) {
+void fzAxisRotation(char* configuracion, int start, int times, int inRotation) {
 	char tmp1;
 	
 	for (int i = 1; i <= times; i++) {
-		if (inRotation) {
-			tmp1 = configuracion[start+7];
-			configuracion[start+7] = configuracion[start+27];
-			configuracion[start+27] = configuracion[start+107];
-			configuracion[start+107] = configuracion[start+95];
-			configuracion[start+95] = tmp1;
-		}
-
+		
 		tmp1 = configuracion[start+37];
 		configuracion[start+37] = configuracion[start+28];
 		configuracion[start+28] = configuracion[start+77];
@@ -384,22 +386,106 @@ void zAxisRotation(char* configuracion, int start, int times, int inRotation) {
 		configuracion[start+47] = configuracion[start+93];
 		configuracion[start+93] = tmp1;
 
-		if (inRotation) {
-			tmp1 = configuracion[start+97];
-			configuracion[start+97] = configuracion[start+30];
-			configuracion[start+30] = configuracion[start+17];
-			configuracion[start+17] = configuracion[start+92];
-			configuracion[start+92] = tmp1;
+		if (!inRotation) {
+			if (start == 5) faceRotation(configuracion, 18);
+			else faceRotation(configuracion, 28);
 		}
-
-		//printf("\n\n%c %c %c %c\n\n", configuracion[start+37],configuracion[start+28],configuracion[start+77],configuracion[start+33]);
-
-		/*if (!inRotation) {
-			if (start == 5) faceRotation(configuracion, 13);
-			else faceRotation(configuracion, 23);
-		}*/
 	}
 }
+
+void fizAxisRotation(char* configuracion, int start, int times, int inRotation) {
+	char tmp1;
+	
+	for (int i = 1; i <= times; i++) {
+		if (inRotation) {
+			tmp1 = configuracion[start+7];
+			configuracion[start+7] = configuracion[start+56];
+			configuracion[start+56] = configuracion[start+107];
+			configuracion[start+107] = configuracion[start+64];
+			configuracion[start+64] = tmp1;
+		}
+
+		tmp1 = configuracion[start+37];
+		configuracion[start+37] = configuracion[start+57];
+		configuracion[start+57] = configuracion[start+77];
+		configuracion[start+77] = configuracion[start+63];
+		configuracion[start+63] = tmp1;
+
+		tmp1 = configuracion[start+67];
+		configuracion[start+67] = configuracion[start+58];
+		configuracion[start+58] = configuracion[start+47];
+		configuracion[start+47] = configuracion[start+62];
+		configuracion[start+62] = tmp1;
+
+		if (inRotation) {
+			tmp1 = configuracion[start+97];
+			configuracion[start+97] = configuracion[start+59];
+			configuracion[start+59] = configuracion[start+17];
+			configuracion[start+17] = configuracion[start+61];
+			configuracion[start+61] = tmp1;
+		}
+	}
+}
+
+void bzAxisRotation(char* configuracion, int start, int times, int inRotation) {
+	char tmp1;
+	
+	for (int i = 1; i <= times; i++) {
+		
+		tmp1 = configuracion[start+37];
+		configuracion[start+37] = configuracion[start+115];
+		configuracion[start+115] = configuracion[start+77];
+		configuracion[start+77] = configuracion[start+1];
+		configuracion[start+1] = tmp1;
+
+		tmp1 = configuracion[start+67];
+		configuracion[start+67] = configuracion[start+116];
+		configuracion[start+116] = configuracion[start+47];
+		configuracion[start+47] = configuracion[start];
+		configuracion[start] = tmp1;
+		
+		if (!inRotation) {
+			if (start == 5) faceRotation(configuracion, 18);
+			else faceRotation(configuracion, 28);
+		}
+		
+	}
+}
+
+void bizAxisRotation(char* configuracion, int start, int times, int inRotation) {
+	char tmp1;
+	
+	for (int i = 1; i <= times; i++) {
+		if (inRotation) {
+			tmp1 = configuracion[start+7];
+			configuracion[start+7] = configuracion[start+83];
+			configuracion[start+83] = configuracion[start+107];
+			configuracion[start+107] = configuracion[start+31];
+			configuracion[start+31] = tmp1;
+		}
+
+		tmp1 = configuracion[start+37];
+		configuracion[start+37] = configuracion[start+84];
+		configuracion[start+84] = configuracion[start+77];
+		configuracion[start+77] = configuracion[start+30];
+		configuracion[start+30] = tmp1;
+
+		tmp1 = configuracion[start+67];
+		configuracion[start+67] = configuracion[start+85];
+		configuracion[start+85] = configuracion[start+47];
+		configuracion[start+47] = configuracion[start+29];
+		configuracion[start+29] = tmp1;
+
+		if (inRotation) {
+			tmp1 = configuracion[start+97];
+			configuracion[start+97] = configuracion[start+86];
+			configuracion[start+86] = configuracion[start+17];
+			configuracion[start+17] = configuracion[start+28];
+			configuracion[start+28] = tmp1;
+		}
+	}
+}
+
 
 void faceRotation(char* configuracion, int start) {
 	char tmp1;

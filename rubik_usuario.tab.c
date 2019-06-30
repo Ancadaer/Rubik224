@@ -68,6 +68,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 void yyerror (char const *);
 void yyerrorCmd (char *);
@@ -76,11 +77,55 @@ void create224Configuration (char *);
 void scrambleN(char * , int);
 int exitsFile(char *);
 void exitRubik();
+
+void riMove(char * file);
+void riPrimeMove(char * file);
+void rMove(char * file);
+void rPrimeMove(char * file);
+void liMove(char * file);
+void liPrimeMove(char * file);
+void lMove(char * file);
+void lPrimeMove(char * file);
 void uiMove(char * file);
+void uiPrimeMove(char * file);
+void uMove(char * file);
+void uPrimeMove(char * file);
+void diMove(char * file);
+void diPrimeMove(char * file);
+void dMove(char * file);
+void dPrimeMove(char * file);
+void fiMove(char * file);
+void fiPrimeMove(char * file);
+void fMove(char * file);
+void fPrimeMove(char * file);
+void biMove(char * file);
+void biPrimeMove(char * file);
+void bMove(char * file);
+void bPrimeMove(char * file);
+void movement(char* file, int start, int times, int axis, int inRotation, int CheckRotation);
+
+void xAxisRotation(char* configuracion, int start, int times, int inRotation);
+void yAxisRotation(char* configuracion, int start, int times, int inRotation);
+void fzAxisRotation(char* configuracion, int start, int times, int inRotation);
+void fizAxisRotation(char* configuracion, int start, int times, int inRotation);
+void bzAxisRotation(char* configuracion, int start, int times, int inRotation);
+void bizAxisRotation(char* configuracion, int start, int times, int inRotation);
+void faceRotation(char* configuracion, int start);
+int checkAvailableRotation(char* configuracion, int start);
+
+void getConfiguracion(char* configuracion, char* file);
+void printConfiguracion(char* configuracion, char* file);
 void append(char* s, char c);
+
+typedef void (*FunctionCallback)(char *);
+FunctionCallback functions[] = {&riMove, &riPrimeMove, &rMove, &rPrimeMove, &rPrimeMove,
+&liMove, &liPrimeMove, &lMove, &lPrimeMove, &uiMove, &uiPrimeMove, &uMove, &uPrimeMove,
+&diMove, &diPrimeMove, &dMove, &dPrimeMove, &fiMove, &fiPrimeMove, &fMove, &fPrimeMove,
+&biMove, &biPrimeMove, &bMove, &bPrimeMove};
+
 char * file;
 
-#line 84 "rubik_usuario.tab.c" /* yacc.c:339  */
+#line 129 "rubik_usuario.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -190,12 +235,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 18 "rubik_usuario.y" /* yacc.c:355  */
+#line 63 "rubik_usuario.y" /* yacc.c:355  */
 
 	char * valString;
 	int valInt;
 
-#line 199 "rubik_usuario.tab.c" /* yacc.c:355  */
+#line 244 "rubik_usuario.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -212,7 +257,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 216 "rubik_usuario.tab.c" /* yacc.c:358  */
+#line 261 "rubik_usuario.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -513,10 +558,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    33,    33,    35,    36,    39,    40,    41,    42,    43,
-      44,    44,    45,    46,    49,    50,    53,    53,    53,    53,
-      53,    53,    53,    53,    53,    53,    53,    53,    54,    54,
-      54,    54,    54,    54,    54,    54,    54,    54,    54,    54
+       0,    78,    78,    80,    81,    84,    85,    86,    87,    88,
+      89,    89,    90,    91,    94,    95,    98,    98,    98,    98,
+      99,    99,    99,    99,   100,   100,   100,   100,   101,   101,
+     101,   101,   102,   102,   102,   102,   103,   103,   103,   103
 };
 #endif
 
@@ -574,9 +619,9 @@ static const yytype_uint8 yydefact[] =
 {
        0,    13,     0,    12,     0,     0,     0,     0,     0,     0,
        2,     0,    10,     0,     8,     9,     6,     5,     1,     3,
-       0,     7,    16,    17,    18,    19,    20,    21,    22,    23,
-      24,    25,    26,    27,    28,    29,    30,    31,    32,    33,
-      34,    35,    36,    37,    38,    39,    11,    15,    14
+       0,     7,    16,    17,    18,    19,    24,    25,    26,    27,
+      36,    37,    38,    39,    28,    29,    30,    31,    32,    33,
+      34,    35,    20,    21,    22,    23,    11,    15,    14
 };
 
   /* YYPGOTO[NTERM-NUM].  */
@@ -1317,43 +1362,187 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 39 "rubik_usuario.y" /* yacc.c:1646  */
-    {if (!exitsFile((yyvsp[0].valString))) create224Configuration((yyvsp[0].valString)); else yyerrorCmd("Can't create file %s, it already exists.\n");}
-#line 1323 "rubik_usuario.tab.c" /* yacc.c:1646  */
+#line 84 "rubik_usuario.y" /* yacc.c:1646  */
+    {if (!exitsFile((yyvsp[0].valString))) create224Configuration((yyvsp[0].valString)); else yyerrorCmd("Can't create file, it already exists.\n");}
+#line 1368 "rubik_usuario.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 40 "rubik_usuario.y" /* yacc.c:1646  */
+#line 85 "rubik_usuario.y" /* yacc.c:1646  */
     {if (exitsFile((yyvsp[0].valString))) create224Configuration((yyvsp[0].valString)); else yyerrorCmd("Can't reset file, it doesn't exist.\n");}
-#line 1329 "rubik_usuario.tab.c" /* yacc.c:1646  */
+#line 1374 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 7:
+#line 86 "rubik_usuario.y" /* yacc.c:1646  */
+    {scrambleN((yyvsp[0].valString), (yyvsp[-1].valInt));}
+#line 1380 "rubik_usuario.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 44 "rubik_usuario.y" /* yacc.c:1646  */
+#line 89 "rubik_usuario.y" /* yacc.c:1646  */
     {file = strdup((yyvsp[0].valString));}
-#line 1335 "rubik_usuario.tab.c" /* yacc.c:1646  */
+#line 1386 "rubik_usuario.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 45 "rubik_usuario.y" /* yacc.c:1646  */
+#line 90 "rubik_usuario.y" /* yacc.c:1646  */
     {exitRubik();}
-#line 1341 "rubik_usuario.tab.c" /* yacc.c:1646  */
+#line 1392 "rubik_usuario.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 46 "rubik_usuario.y" /* yacc.c:1646  */
+#line 91 "rubik_usuario.y" /* yacc.c:1646  */
     {yyerrorCmd("Wrong command.");}
-#line 1347 "rubik_usuario.tab.c" /* yacc.c:1646  */
+#line 1398 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 16:
+#line 98 "rubik_usuario.y" /* yacc.c:1646  */
+    {uiPrimeMove(file);}
+#line 1404 "rubik_usuario.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 53 "rubik_usuario.y" /* yacc.c:1646  */
+#line 98 "rubik_usuario.y" /* yacc.c:1646  */
     {uiMove(file);}
-#line 1353 "rubik_usuario.tab.c" /* yacc.c:1646  */
+#line 1410 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 18:
+#line 98 "rubik_usuario.y" /* yacc.c:1646  */
+    {uPrimeMove(file);}
+#line 1416 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 98 "rubik_usuario.y" /* yacc.c:1646  */
+    {uMove(file);}
+#line 1422 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 99 "rubik_usuario.y" /* yacc.c:1646  */
+    {diPrimeMove(file);}
+#line 1428 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 21:
+#line 99 "rubik_usuario.y" /* yacc.c:1646  */
+    {diMove(file);}
+#line 1434 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 22:
+#line 99 "rubik_usuario.y" /* yacc.c:1646  */
+    {dPrimeMove(file);}
+#line 1440 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 23:
+#line 99 "rubik_usuario.y" /* yacc.c:1646  */
+    {dMove(file);}
+#line 1446 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 24:
+#line 100 "rubik_usuario.y" /* yacc.c:1646  */
+    {riPrimeMove(file);}
+#line 1452 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 25:
+#line 100 "rubik_usuario.y" /* yacc.c:1646  */
+    {riMove(file);}
+#line 1458 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 26:
+#line 100 "rubik_usuario.y" /* yacc.c:1646  */
+    {rPrimeMove(file);}
+#line 1464 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 27:
+#line 100 "rubik_usuario.y" /* yacc.c:1646  */
+    {rMove(file);}
+#line 1470 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 28:
+#line 101 "rubik_usuario.y" /* yacc.c:1646  */
+    {liPrimeMove(file);}
+#line 1476 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 29:
+#line 101 "rubik_usuario.y" /* yacc.c:1646  */
+    {liMove(file);}
+#line 1482 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 30:
+#line 101 "rubik_usuario.y" /* yacc.c:1646  */
+    {lPrimeMove(file);}
+#line 1488 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 31:
+#line 101 "rubik_usuario.y" /* yacc.c:1646  */
+    {lMove(file);}
+#line 1494 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 32:
+#line 102 "rubik_usuario.y" /* yacc.c:1646  */
+    {fiPrimeMove(file);}
+#line 1500 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 33:
+#line 102 "rubik_usuario.y" /* yacc.c:1646  */
+    {fiMove(file);}
+#line 1506 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 34:
+#line 102 "rubik_usuario.y" /* yacc.c:1646  */
+    {fPrimeMove(file);}
+#line 1512 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 35:
+#line 102 "rubik_usuario.y" /* yacc.c:1646  */
+    {fMove(file);}
+#line 1518 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 36:
+#line 103 "rubik_usuario.y" /* yacc.c:1646  */
+    {biPrimeMove(file);}
+#line 1524 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 37:
+#line 103 "rubik_usuario.y" /* yacc.c:1646  */
+    {biMove(file);}
+#line 1530 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 38:
+#line 103 "rubik_usuario.y" /* yacc.c:1646  */
+    {bPrimeMove(file);}
+#line 1536 "rubik_usuario.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 39:
+#line 103 "rubik_usuario.y" /* yacc.c:1646  */
+    {bMove(file);}
+#line 1542 "rubik_usuario.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1357 "rubik_usuario.tab.c" /* yacc.c:1646  */
+#line 1546 "rubik_usuario.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1581,7 +1770,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 57 "rubik_usuario.y" /* yacc.c:1906  */
+#line 106 "rubik_usuario.y" /* yacc.c:1906  */
 
 
 int main() {
@@ -1615,9 +1804,11 @@ void scrambleN(char * file, int n) {
 	/*De momento declaro j para hacer algo en el for
 		lo sustituiria el hacer un movimiento aleatorio una vez esten hechos
 	*/
+	srand(time(NULL));
 	int j = 0;
+	int randMax = 24;
 	for (int i = 0; i <= n; i++) {
-		j++;
+		functions[rand() % randMax](file);
 
 	}
 
@@ -1637,44 +1828,419 @@ void exitRubik(){
 	exit(0);
 }
 
+/****************************************
+Funciones para movimientos posibles
+****************************************/
 
+// Eje x
+void riMove(char * file) {
+	movement(file, 12, 1, 1, 1, 0);
+	movement(file, 13, 1, 1, 0, 0);
+}
+
+void riPrimeMove(char * file) {
+	movement(file, 12, 3, 1, 1, 0);
+	movement(file, 13, 3, 1, 0, 0);
+}
+
+void rMove(char * file) {
+	movement(file, 13, 1, 1, 0, 16);
+}
+
+void rPrimeMove(char * file) {
+	movement(file, 13, 3, 1, 0, 16);
+}
+
+void liMove(char * file) {
+	movement(file, 11, 3, 1, 1, 0);
+	movement(file, 10, 3, 1, 0, 0);
+}
+
+void liPrimeMove(char * file) {
+	movement(file, 11, 1, 1, 1, 0);
+	movement(file, 10, 1, 1, 0, 0);
+}
+
+void lMove(char * file) {
+	movement(file, 10, 3, 1, 0, 6);
+}
+
+void lPrimeMove(char * file) {
+	movement(file, 10, 1, 1, 0, 6);
+}
+
+// Eje y
 void uiMove(char * file) {
-	char configuracion [1000];
-	FILE *source;
-	char ch, tmp1;
-	source = fopen("./resources/conf.txt", "r");
-	while ((ch = fgetc(source)) != EOF)
-		append(configuracion, ch);
+	movement(file, 36, 1, 2, 1, 0);
+	movement(file, 6, 1, 2, 0, 0);
+}
 
-	tmp1 = configuracion[6];
-	configuracion[6] = configuracion[11];
-	configuracion[11] = configuracion[16];
-	configuracion[16] = configuracion[21];
-	configuracion[21] = tmp1;
+void uiPrimeMove(char * file) {
+	movement(file, 36, 3, 2, 1, 0);
+	movement(file, 6, 3, 2, 0, 0);
+}
 
-	tmp1 = configuracion[7];
-	configuracion[7] = configuracion[12];
-	configuracion[12] = configuracion[17];
-	configuracion[17] = configuracion[22];
-	configuracion[22] = tmp1;
+void uMove(char * file) {
+	movement(file, 6, 1, 2, 0, 1);
+}
 
-	tmp1 = configuracion[36];
-	configuracion[36] = configuracion[41];
-	configuracion[41] = configuracion[46];
-	configuracion[46] = configuracion[51];
-	configuracion[51] = tmp1;
+void uPrimeMove(char * file) {
+	movement(file, 6, 3, 2, 0, 1);
+}
 
-	tmp1 = configuracion[37];
-	configuracion[37] = configuracion[42];
-	configuracion[42] = configuracion[47];
-	configuracion[47] = configuracion[52];
-	configuracion[52] = tmp1;
+void diMove(char * file) {
+	movement(file, 66, 3, 2, 1, 0);
+	movement(file, 96, 3, 2, 0, 0);
+}
+
+void diPrimeMove(char * file) {
+	movement(file, 66, 1, 2, 1, 0);
+	movement(file, 96, 1, 2, 0, 0);
+}
+
+void dMove(char * file) {
+	movement(file, 66, 3, 2, 0, 26);
+}
+
+void dPrimeMove(char * file) {
+	movement(file, 66, 1, 2, 0, 26);
+}
+
+// Eje z
+void fiMove(char * file) {
+	movement(file, 6, 1, 4, 1, 0);
+	movement(file, 5, 1, 3, 0, 0);
+}
+
+void fiPrimeMove(char * file) {
+	movement(file, 6, 3, 4, 1, 0);
+	movement(file, 5, 3, 3, 0, 0);
+}
+
+void fMove(char * file) {
+	movement(file, 5, 1, 3, 0, 11);
+}
+
+void fPrimeMove(char * file) {
+	movement(file, 5, 3, 3, 0, 11);
+}
+
+void biMove(char * file) {
+	movement(file, 7, 3, 6, 1, 0);
+	movement(file, 8, 3, 5, 0, 0);
+}
+
+void biPrimeMove(char * file) {
+	movement(file, 7, 1, 6, 1, 0);
+	movement(file, 8, 1, 5, 0, 0);
+}
+
+void bMove(char * file) {
+	movement(file, 8, 3, 5, 0, 21);
+}
+
+void bPrimeMove(char * file) {
+	movement(file, 8, 1, 5, 0, 21);
+}
 
 
-	FILE *target;
-	target = fopen(file, "w");
+void movement(char* file, int start, int times, int axis, int inRotation, int checkRotation) {
+	char configuracion [200];
+	getConfiguracion(configuracion, file);
 
-	fprintf(target, "%s\n", configuracion);
+	if (checkAvailableRotation(configuracion, checkRotation) == 0) {
+		switch(axis){
+			case 1: xAxisRotation(configuracion, start, times, inRotation);
+				break;
+			case 2: yAxisRotation(configuracion, start, times, inRotation);
+				break;
+			case 3: fzAxisRotation(configuracion, start, times, inRotation);
+				break;
+			case 4: fizAxisRotation(configuracion, start, times, inRotation);
+				break;
+			case 5: bzAxisRotation(configuracion, start, times, inRotation);
+				break;
+			case 6: bizAxisRotation(configuracion, start, times, inRotation);
+				break;
+		}
+		printConfiguracion(configuracion, file);
+	}
+	else printf("\nMovement not available. \n");
+
+	for (int i = 0; i < 200; i++) configuracion[i] = '\0';
+}
+
+/****************************************
+Funciones para rotaciones posibles
+****************************************/
+
+void xAxisRotation(char* configuracion, int start, int times, int inRotation) {
+	char tmp1;
+
+	for (int i = 1; i <= times; i++) {
+		if (inRotation) {
+			tmp1 = configuracion[start+7];
+			configuracion[start+7] = configuracion[start+22];
+			configuracion[start+22] = configuracion[start+107];
+			configuracion[start+107] = configuracion[start-3];
+			configuracion[start-3] = tmp1;
+		}
+
+		tmp1 = configuracion[start+37];
+		configuracion[start+37] = configuracion[start+52];
+		configuracion[start+52] = configuracion[start+77];
+		configuracion[start+77] = configuracion[start+27];
+		configuracion[start+27] = tmp1;
+
+		tmp1 = configuracion[start+67];
+		configuracion[start+67] = configuracion[start+82];
+		configuracion[start+82] = configuracion[start+47];
+		configuracion[start+47] = configuracion[start+57];
+		configuracion[start+57] = tmp1;
+
+		if (inRotation) {
+			tmp1 = configuracion[start+97];
+			configuracion[start+97] = configuracion[start+112];
+			configuracion[start+112] = configuracion[start+17];
+			configuracion[start+17] = configuracion[start+87];
+			configuracion[start+87] = tmp1;
+		}
+
+		if (!inRotation) {
+			if (start == 13) faceRotation(configuracion, 23);
+			else faceRotation(configuracion, 13);
+		}
+	}
+}
+
+void yAxisRotation(char* configuracion, int start, int times, int inRotation) {
+	char tmp1;
+
+	for (int i = 1; i <= times; i++) {
+		if (inRotation) {
+			tmp1 = configuracion[start+6];
+			configuracion[start+6] = configuracion[start+11];
+			configuracion[start+11] = configuracion[start+16];
+			configuracion[start+16] = configuracion[start+21];
+			configuracion[start+21] = tmp1;
+		}
+
+		tmp1 = configuracion[start+7];
+		configuracion[start+7] = configuracion[start+12];
+		configuracion[start+12] = configuracion[start+17];
+		configuracion[start+17] = configuracion[start+22];
+		configuracion[start+22] = tmp1;
+
+		tmp1 = configuracion[start+8];
+		configuracion[start+8] = configuracion[start+13];
+		configuracion[start+13] = configuracion[start+18];
+		configuracion[start+18] = configuracion[start+23];
+		configuracion[start+23] = tmp1;
+
+		if (inRotation) {
+			tmp1 = configuracion[start+9];
+			configuracion[start+9] = configuracion[start+14];
+			configuracion[start+14] = configuracion[start+19];
+			configuracion[start+19] = configuracion[start+24];
+			configuracion[start+24] = tmp1;
+		}
+
+		if (!inRotation) {
+			if (start == 6) faceRotation(configuracion, 8);
+			else faceRotation(configuracion, 33);
+		}
+	}
+}
+
+void fzAxisRotation(char* configuracion, int start, int times, int inRotation) {
+	char tmp1;
+
+	for (int i = 1; i <= times; i++) {
+
+		tmp1 = configuracion[start+37];
+		configuracion[start+37] = configuracion[start+28];
+		configuracion[start+28] = configuracion[start+77];
+		configuracion[start+77] = configuracion[start+94];
+		configuracion[start+94] = tmp1;
+
+		tmp1 = configuracion[start+67];
+		configuracion[start+67] = configuracion[start+29];
+		configuracion[start+29] = configuracion[start+47];
+		configuracion[start+47] = configuracion[start+93];
+		configuracion[start+93] = tmp1;
+
+		if (!inRotation) {
+			if (start == 5) faceRotation(configuracion, 18);
+			else faceRotation(configuracion, 28);
+		}
+	}
+}
+
+void fizAxisRotation(char* configuracion, int start, int times, int inRotation) {
+	char tmp1;
+
+	for (int i = 1; i <= times; i++) {
+		if (inRotation) {
+			tmp1 = configuracion[start+7];
+			configuracion[start+7] = configuracion[start+56];
+			configuracion[start+56] = configuracion[start+107];
+			configuracion[start+107] = configuracion[start+64];
+			configuracion[start+64] = tmp1;
+		}
+
+		tmp1 = configuracion[start+37];
+		configuracion[start+37] = configuracion[start+57];
+		configuracion[start+57] = configuracion[start+77];
+		configuracion[start+77] = configuracion[start+63];
+		configuracion[start+63] = tmp1;
+
+		tmp1 = configuracion[start+67];
+		configuracion[start+67] = configuracion[start+58];
+		configuracion[start+58] = configuracion[start+47];
+		configuracion[start+47] = configuracion[start+62];
+		configuracion[start+62] = tmp1;
+
+		if (inRotation) {
+			tmp1 = configuracion[start+97];
+			configuracion[start+97] = configuracion[start+59];
+			configuracion[start+59] = configuracion[start+17];
+			configuracion[start+17] = configuracion[start+61];
+			configuracion[start+61] = tmp1;
+		}
+	}
+}
+
+void bzAxisRotation(char* configuracion, int start, int times, int inRotation) {
+	char tmp1;
+
+	for (int i = 1; i <= times; i++) {
+
+		tmp1 = configuracion[start+37];
+		configuracion[start+37] = configuracion[start+115];
+		configuracion[start+115] = configuracion[start+77];
+		configuracion[start+77] = configuracion[start+1];
+		configuracion[start+1] = tmp1;
+
+		tmp1 = configuracion[start+67];
+		configuracion[start+67] = configuracion[start+116];
+		configuracion[start+116] = configuracion[start+47];
+		configuracion[start+47] = configuracion[start];
+		configuracion[start] = tmp1;
+
+		if (!inRotation) {
+			if (start == 5) faceRotation(configuracion, 18);
+			else faceRotation(configuracion, 28);
+		}
+
+	}
+}
+
+void bizAxisRotation(char* configuracion, int start, int times, int inRotation) {
+	char tmp1;
+
+	for (int i = 1; i <= times; i++) {
+		if (inRotation) {
+			tmp1 = configuracion[start+7];
+			configuracion[start+7] = configuracion[start+85];
+			configuracion[start+85] = configuracion[start+107];
+			configuracion[start+107] = configuracion[start+33];
+			configuracion[start+33] = tmp1;
+		}
+
+		tmp1 = configuracion[start+37];
+		configuracion[start+37] = configuracion[start+86];
+		configuracion[start+86] = configuracion[start+77];
+		configuracion[start+77] = configuracion[start+32];
+		configuracion[start+32] = tmp1;
+
+		tmp1 = configuracion[start+67];
+		configuracion[start+67] = configuracion[start+87];
+		configuracion[start+87] = configuracion[start+47];
+		configuracion[start+47] = configuracion[start+31];
+		configuracion[start+31] = tmp1;
+
+		if (inRotation) {
+			tmp1 = configuracion[start+97];
+			configuracion[start+97] = configuracion[start+88];
+			configuracion[start+88] = configuracion[start+17];
+			configuracion[start+17] = configuracion[start+30];
+			configuracion[start+30] = tmp1;
+		}
+	}
+}
+
+
+void faceRotation(char* configuracion, int start) {
+	char tmp1;
+
+	tmp1 = configuracion[start];
+	configuracion[start] = configuracion[start+59];
+	configuracion[start+59] = configuracion[start+91];
+	configuracion[start+91] = configuracion[start+32];
+	configuracion[start+32] = tmp1;
+
+	tmp1 = configuracion[start+1];
+	configuracion[start+1] = configuracion[start+29];
+	configuracion[start+29] = configuracion[start+90];
+	configuracion[start+90] = configuracion[start+62];
+	configuracion[start+62] = tmp1;
+
+	tmp1 = configuracion[start+30];
+	configuracion[start+30] = configuracion[start+60];
+	configuracion[start+60] = configuracion[start+61];
+	configuracion[start+61] = configuracion[start+31];
+	configuracion[start+31] = tmp1;
+}
+
+/****************************************
+Funciones para comprobar rotaciones posibles
+****************************************/
+
+int checkAvailableRotation(char* configuracion, int start) {
+	int block = 0;
+
+	if (start == 0) return 0;
+	else {
+		if (configuracion[start+7] != '-') block = 1;
+		if (configuracion[start+8] != '-') block = 1;
+		if (configuracion[start+36] != '-') block = 1;
+		if (configuracion[start+39] != '-') block = 1;
+		if (configuracion[start+66] != '-') block = 1;
+		if (configuracion[start+69] != '-') block = 1;
+		if (configuracion[start+97] != '-') block = 1;
+		if (configuracion[start+98] != '-') block = 1;
+	}
+
+	return block;
+}
+
+
+void getConfiguracion(char* configuracion, char* file){
+	char ch;
+	FILE *my_file;
+	my_file = fopen(file, "r");
+
+	configuracion[0] = 'x';
+	configuracion[1] = 'x';
+	configuracion[2] = 'x';
+	configuracion[3] = 'x';
+	configuracion[4] = 'x';
+	configuracion[5] = 'x';
+	configuracion[6] = 'x';
+
+	while ((ch = fgetc(my_file)) != EOF) append(configuracion, ch);
+
+	fclose(my_file);
+}
+
+void printConfiguracion(char* configuracion, char* file){
+	FILE *my_file;
+	my_file = fopen(file, "w");
+
+	printf("%s\n\n", configuracion+7);
+	fprintf(my_file, "%s", configuracion+7);
+
+	fclose(my_file);
 }
 
 void append(char* s, char c){

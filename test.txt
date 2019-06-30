@@ -1,4 +1,4 @@
-.--. .BB. .OO. .GG. .RR. .--.
--WW- -BB- -OO- -GG- -RR- -YY-
--WW- -BB- -OO- -GG- -RR- -YY-
-.--. .BB. .OO. .GG. .RR. .--.
+.--. .G-. .R-. .--. .--. .R-.
+OOOO -GY- -RGG -WW- BBBB -RY-
+-WOO -GW- BBRR BBY- -OY- GGRR
+.--. .G-. .--. .--. .O-. .--.

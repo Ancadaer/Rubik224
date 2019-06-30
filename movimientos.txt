@@ -1,2 +1,2 @@
 reset test.txt
-move test.txt d
+scramble 10 test.txt

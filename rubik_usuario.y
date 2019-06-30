@@ -254,7 +254,7 @@ void biMove(char * file) {
 
 void biPrimeMove(char * file) { 
 	movement(file, 7, 1, 6, 1, 0);
-	//movement(file, 8, 1, 5, 0, 0);
+	movement(file, 8, 1, 5, 0, 0);
 }
 
 void bMove(char * file) { 
@@ -463,30 +463,30 @@ void bizAxisRotation(char* configuracion, int start, int times, int inRotation) 
 	for (int i = 1; i <= times; i++) {
 		if (inRotation) {
 			tmp1 = configuracion[start+7];
-			configuracion[start+7] = configuracion[start+83];
-			configuracion[start+83] = configuracion[start+107];
-			configuracion[start+107] = configuracion[start+31];
-			configuracion[start+31] = tmp1;
+			configuracion[start+7] = configuracion[start+85];
+			configuracion[start+85] = configuracion[start+107];
+			configuracion[start+107] = configuracion[start+33];
+			configuracion[start+33] = tmp1;
 		}
 
 		tmp1 = configuracion[start+37];
-		configuracion[start+37] = configuracion[start+84];
-		configuracion[start+84] = configuracion[start+77];
-		configuracion[start+77] = configuracion[start+30];
-		configuracion[start+30] = tmp1;
+		configuracion[start+37] = configuracion[start+86];
+		configuracion[start+86] = configuracion[start+77];
+		configuracion[start+77] = configuracion[start+32];
+		configuracion[start+32] = tmp1;
 
 		tmp1 = configuracion[start+67];
-		configuracion[start+67] = configuracion[start+85];
-		configuracion[start+85] = configuracion[start+47];
-		configuracion[start+47] = configuracion[start+29];
-		configuracion[start+29] = tmp1;
+		configuracion[start+67] = configuracion[start+87];
+		configuracion[start+87] = configuracion[start+47];
+		configuracion[start+47] = configuracion[start+31];
+		configuracion[start+31] = tmp1;
 
 		if (inRotation) {
 			tmp1 = configuracion[start+97];
-			configuracion[start+97] = configuracion[start+86];
-			configuracion[start+86] = configuracion[start+17];
-			configuracion[start+17] = configuracion[start+28];
-			configuracion[start+28] = tmp1;
+			configuracion[start+97] = configuracion[start+88];
+			configuracion[start+88] = configuracion[start+17];
+			configuracion[start+17] = configuracion[start+30];
+			configuracion[start+30] = tmp1;
 		}
 	}
 }

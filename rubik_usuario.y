@@ -36,7 +36,7 @@ void biMove(char * file);
 void biPrimeMove(char * file);
 void bMove(char * file);
 void bPrimeMove(char * file);
-void movement(char* file, int start, int times, int axis, int inRotation);
+void movement(char* file, int start, int times, int axis, int inRotation, int CheckRotation);
 
 void xAxisRotation(char* configuracion, int start, int times, int inRotation);
 void yAxisRotation(char* configuracion, int start, int times, int inRotation);
@@ -45,6 +45,7 @@ void fizAxisRotation(char* configuracion, int start, int times, int inRotation);
 void bzAxisRotation(char* configuracion, int start, int times, int inRotation);
 void bizAxisRotation(char* configuracion, int start, int times, int inRotation);
 void faceRotation(char* configuracion, int start);
+int checkAvailableRotation(char* configuracion, int start);
 
 void getConfiguracion(char* configuracion, char* file);
 void printConfiguracion(char* configuracion, char* file);
@@ -155,135 +156,139 @@ Funciones para movimientos posibles
 
 // Eje x
 void riMove(char * file) { 
-	movement(file, 12, 1, 1, 1);
-	movement(file, 13, 1, 1, 0);
+	movement(file, 12, 1, 1, 1, 0);
+	movement(file, 13, 1, 1, 0, 0);
 }
 
 void riPrimeMove(char * file) { 
-	movement(file, 12, 3, 1, 1);
-	movement(file, 13, 3, 1, 0);
+	movement(file, 12, 3, 1, 1, 0);
+	movement(file, 13, 3, 1, 0, 0);
 }
 
 void rMove(char * file) { 
-	movement(file, 13, 1, 1, 0);
+	movement(file, 13, 1, 1, 0, 16);
 }
 
 void rPrimeMove(char * file) { 
-	movement(file, 13, 3, 1, 0);
+	movement(file, 13, 3, 1, 0, 16);
 }
 
 void liMove(char * file) { 
-	movement(file, 11, 3, 1, 1);
-	movement(file, 10, 3, 1, 0);
+	movement(file, 11, 3, 1, 1, 0);
+	movement(file, 10, 3, 1, 0, 0);
 }
 
 void liPrimeMove(char * file) { 
-	movement(file, 11, 1, 1, 1);
-	movement(file, 10, 1, 1, 0);
+	movement(file, 11, 1, 1, 1, 0);
+	movement(file, 10, 1, 1, 0, 0);
 }
 
 void lMove(char * file) { 
-	movement(file, 10, 3, 1, 0);
+	movement(file, 10, 3, 1, 0, 6);
 }
 
 void lPrimeMove(char * file) { 
-	movement(file, 10, 1, 1, 0);
+	movement(file, 10, 1, 1, 0, 6);
 }
 
 // Eje y
 void uiMove(char * file) { 
-	movement(file, 36, 1, 2, 1);
-	movement(file, 6, 1, 2, 0);
+	movement(file, 36, 1, 2, 1, 0);
+	movement(file, 6, 1, 2, 0, 0);
 }
 
 void uiPrimeMove(char * file) { 
-	movement(file, 36, 3, 2, 1);
-	movement(file, 6, 3, 2, 0);
+	movement(file, 36, 3, 2, 1, 0);
+	movement(file, 6, 3, 2, 0, 0);
 }
 
 void uMove(char * file) { 
-	movement(file, 6, 1, 2, 0);
+	movement(file, 6, 1, 2, 0, 1);
 }
 
 void uPrimeMove(char * file) { 
-	movement(file, 6, 3, 2, 0);
+	movement(file, 6, 3, 2, 0, 1);
 }
 
 void diMove(char * file) { 
-	movement(file, 66, 3, 2, 1);
-	movement(file, 96, 3, 2, 0);
+	movement(file, 66, 3, 2, 1, 0);
+	movement(file, 96, 3, 2, 0, 0);
 }
 
 void diPrimeMove(char * file) { 
-	movement(file, 66, 1, 2, 1);
-	movement(file, 96, 1, 2, 0);
+	movement(file, 66, 1, 2, 1, 0);
+	movement(file, 96, 1, 2, 0, 0);
 }
 
 void dMove(char * file) { 
-	movement(file, 66, 3, 2, 0);
+	movement(file, 66, 3, 2, 0, 26);
 }
 
 void dPrimeMove(char * file) { 
-	movement(file, 66, 1, 2, 0);
+	movement(file, 66, 1, 2, 0, 26);
 }
 
 // Eje z
 void fiMove(char * file) { 
-	movement(file, 6, 1, 4, 1);
-	movement(file, 5, 1, 3, 0);
+	movement(file, 6, 1, 4, 1, 0);
+	movement(file, 5, 1, 3, 0, 0);
 }
 
 void fiPrimeMove(char * file) { 
-	movement(file, 6, 3, 4, 1);
-	movement(file, 5, 3, 3, 0);
+	movement(file, 6, 3, 4, 1, 0);
+	movement(file, 5, 3, 3, 0, 0);
 }
 
 void fMove(char * file) { 
-	movement(file, 5, 1, 3, 0);
+	movement(file, 5, 1, 3, 0, 11);
 }
 
 void fPrimeMove(char * file) { 
-	movement(file, 5, 3, 3, 0);
+	movement(file, 5, 3, 3, 0, 11);
 }
 
 void biMove(char * file) { 
-	movement(file, 7, 3, 6, 1);
-	movement(file, 8, 3, 5, 0);
+	movement(file, 7, 3, 6, 1, 0);
+	movement(file, 8, 3, 5, 0, 0);
 }
 
 void biPrimeMove(char * file) { 
-	movement(file, 7, 1, 6, 1);
-	//movement(file, 8, 1, 5, 0);
+	movement(file, 7, 1, 6, 1, 0);
+	//movement(file, 8, 1, 5, 0, 0);
 }
 
 void bMove(char * file) { 
-	movement(file, 8, 3, 5, 0);
+	movement(file, 8, 3, 5, 0, 21);
 }
 
 void bPrimeMove(char * file) { 
-	movement(file, 8, 1, 5, 0);
+	movement(file, 8, 1, 5, 0, 21);
 }
 
 
-void movement(char* file, int start, int times, int axis, int inRotation) {
+void movement(char* file, int start, int times, int axis, int inRotation, int checkRotation) {
 	char configuracion [200];
 	getConfiguracion(configuracion, file);
-	switch(axis){
-		case 1: xAxisRotation(configuracion, start, times, inRotation);
-			break;
-		case 2: yAxisRotation(configuracion, start, times, inRotation);
-			break;
-		case 3: fzAxisRotation(configuracion, start, times, inRotation);
-			break;
-		case 4: fizAxisRotation(configuracion, start, times, inRotation);
-			break;
-		case 5: bzAxisRotation(configuracion, start, times, inRotation);
-			break;
-		case 6: bizAxisRotation(configuracion, start, times, inRotation);
-			break;
-	}
-	printConfiguracion(configuracion, file);
 	
+	if (checkAvailableRotation(configuracion, checkRotation) == 0) {
+		switch(axis){
+			case 1: xAxisRotation(configuracion, start, times, inRotation);
+				break;
+			case 2: yAxisRotation(configuracion, start, times, inRotation);
+				break;
+			case 3: fzAxisRotation(configuracion, start, times, inRotation);
+				break;
+			case 4: fizAxisRotation(configuracion, start, times, inRotation);
+				break;
+			case 5: bzAxisRotation(configuracion, start, times, inRotation);
+				break;
+			case 6: bizAxisRotation(configuracion, start, times, inRotation);
+				break;
+		}
+		printConfiguracion(configuracion, file);
+	}
+	else printf("\nMovement not available. \n");
+		
 	for (int i = 0; i < 200; i++) configuracion[i] = '\0';
 }
 
@@ -507,6 +512,28 @@ void faceRotation(char* configuracion, int start) {
 	configuracion[start+60] = configuracion[start+61];
 	configuracion[start+61] = configuracion[start+31];
 	configuracion[start+31] = tmp1;
+}
+
+/****************************************
+Funciones para comprobar rotaciones posibles
+****************************************/
+
+int checkAvailableRotation(char* configuracion, int start) {
+	int block = 0;
+	
+	if (start == 0) return 0;
+	else {
+		if (configuracion[start+7] != '-') block = 1;
+		if (configuracion[start+8] != '-') block = 1;
+		if (configuracion[start+36] != '-') block = 1;
+		if (configuracion[start+39] != '-') block = 1;
+		if (configuracion[start+66] != '-') block = 1;
+		if (configuracion[start+69] != '-') block = 1;
+		if (configuracion[start+97] != '-') block = 1;
+		if (configuracion[start+98] != '-') block = 1;
+	}
+
+	return block;
 }
 
 

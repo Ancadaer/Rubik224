@@ -11,8 +11,6 @@ create        {return CREATE;}
 reset         {return RESET;}
 move			   	{return MOVE;}
 scramble			{return SCRAMBLE;}
-solved				{return SOLVED;}
-solve 				{return SOLVE;}
 exit          {return EXITR;}
 
 ui'           {return UIPRIME;}

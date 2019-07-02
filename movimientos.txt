@@ -1,2 +1,1 @@
-reset test.txt
-scramble 10 test.txt
+create test.txt

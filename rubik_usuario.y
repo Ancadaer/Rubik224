@@ -52,6 +52,8 @@ void getConfiguracion(char* configuracion, char* file);
 void printConfiguracion(char* configuracion, char* file);
 void append(char* s, char c);
 
+int error = 0;
+
 typedef void (*FunctionCallback)(char *);
 FunctionCallback functions[] = {&riMove, &riPrimeMove, &rMove, &rPrimeMove, &rPrimeMove,
 &liMove, &liPrimeMove, &lMove, &lPrimeMove, &uiMove, &uiPrimeMove, &uMove, &uPrimeMove,
@@ -70,7 +72,7 @@ char * file;
 %token <valString> LIPRIME LI LPRIME L FIPRIME FI FPRIME F DIPRIME DI DPRIME D
 %token <valString> MYFILE
 %token <valInt> TIMES
-%type <valString>  lista_cmds cmd lista_movs mov
+%type <valString>  lista_cmds cmd lista_movs mov scr
 %start S
 
 %%
@@ -81,14 +83,18 @@ lista_cmds : cmd lista_cmds
 			| cmd
 ;
 
-cmd : CREATE MYFILE {if (!exitsFile($2)) create224Configuration($2); else yyerrorCmd("Can't create file, it already exists.\n");}
-		|RESET MYFILE {if (exitsFile($2)) create224Configuration($2); else yyerrorCmd("Can't reset file, it doesn't exist.\n");}
-		|SCRAMBLE TIMES MYFILE {scrambleN($3, $2);}
+cmd : CREATE MYFILE {if (!exitsFile($2)) create224Configuration($2); else yyerrorCmd("No se puede crear el fichero, ya existe.\n");}
+		|RESET MYFILE {if (exitsFile($2)) create224Configuration($2); else yyerrorCmd("No se puede resetear el fichero, no existe.\n");}
+		|SCRAMBLE scr
 		|SOLVED MYFILE
 		|SOLVE MYFILE
 		|MOVE MYFILE {file = strdup($2);} lista_movs
 		|EXITR {exitRubik();}
-		|error {yyerrorCmd("Wrong command.");}
+		|error {if (!error) yyerrorCmd("El comando no existe.");}
+;
+
+scr : TIMES MYFILE {if (exitsFile($2)) scrambleN($2, $1); else yyerrorCmd("El fichero no existe.\n");}
+			|error {error = 1; yyerrorCmd("ERROR scramble: Falta el numero de veces o el fichero o el comando esta mal escrito.");}
 ;
 
 lista_movs : mov lista_movs

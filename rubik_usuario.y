@@ -37,6 +37,7 @@ void biMove(char * file);
 void biPrimeMove(char * file);
 void bMove(char * file);
 void bPrimeMove(char * file);
+void tPermutation(char * file);
 void movement(char* file, int start, int times, int axis, int inRotation, int CheckRotation);
 
 void xAxisRotation(char* configuracion, int start, int times, int inRotation);
@@ -46,6 +47,7 @@ void fizAxisRotation(char* configuracion, int start, int times, int inRotation);
 void bzAxisRotation(char* configuracion, int start, int times, int inRotation);
 void bizAxisRotation(char* configuracion, int start, int times, int inRotation);
 void faceRotation(char* configuracion, int start);
+void faceMirror(char* configuracion, int start); 
 int checkAvailableRotation(char* configuracion, int start);
 
 void getConfiguracion(char* configuracion, char* file);
@@ -58,7 +60,7 @@ typedef void (*FunctionCallback)(char *);
 FunctionCallback functions[] = {&riMove, &riPrimeMove, &rMove, &rPrimeMove, &rPrimeMove,
 &liMove, &liPrimeMove, &lMove, &lPrimeMove, &uiMove, &uiPrimeMove, &uMove, &uPrimeMove,
 &diMove, &diPrimeMove, &dMove, &dPrimeMove, &fiMove, &fiPrimeMove, &fMove, &fPrimeMove,
-&biMove, &biPrimeMove, &bMove, &bPrimeMove};
+&biMove, &biPrimeMove, &bMove, &bPrimeMove, &tPermutation};
 
 char * file;
 %}
@@ -69,7 +71,7 @@ char * file;
 %error-verbose
 %token <valString> MOVE EXITR SCRAMBLE SOLVED SOLVE RESET CREATE
 %token <valString> UIPRIME UI UPRIME U RIPRIME RI RPRIME R BIPRIME BI BPRIME B
-%token <valString> LIPRIME LI LPRIME L FIPRIME FI FPRIME F DIPRIME DI DPRIME D
+%token <valString> LIPRIME LI LPRIME L FIPRIME FI FPRIME F DIPRIME DI DPRIME D TPERM
 %token <valString> MYFILE
 %token <valInt> TIMES
 %type <valString>  lista_cmds cmd lista_movs mov scr
@@ -107,6 +109,7 @@ mov: UIPRIME {uiPrimeMove(file);} | UI {uiMove(file);} | UPRIME {uPrimeMove(file
 	| LIPRIME {liPrimeMove(file);} | LI {liMove(file);} | LPRIME {lPrimeMove(file);} | L {lMove(file);}
 	| FIPRIME {fiPrimeMove(file);} | FI {fiMove(file);} | FPRIME {fPrimeMove(file);} | F {fMove(file);}
 	| BIPRIME {biPrimeMove(file);} | BI {biMove(file);} | BPRIME {bPrimeMove(file);} | B {bMove(file);}
+	| TPERM {tPermutation(file);}
 ;
 
 %%
@@ -281,6 +284,14 @@ void bPrimeMove(char * file) {
 	movement(file, 8, 1, 5, 0, 21);
 }
 
+void tPermutation(char * file) {
+	riMove(file); uiMove(file); riPrimeMove(file); uiPrimeMove(file);
+	riPrimeMove(file); fiMove(file); riMove(file); riMove(file); uiPrimeMove(file);
+	riPrimeMove(file); uiPrimeMove(file);
+	riMove(file); uiMove(file); riPrimeMove(file); fiPrimeMove(file); 
+	//move test.txt ri ui ri' ui' ri' fi ri ri ui' ri' ui' ri ui ri' fi'
+}
+
 
 void movement(char* file, int start, int times, int axis, int inRotation, int checkRotation) {
 	char configuracion [200];
@@ -316,6 +327,8 @@ void xAxisRotation(char* configuracion, int start, int times, int inRotation) {
 	char tmp1;
 
 	for (int i = 1; i <= times; i++) {
+		faceMirror(configuracion, 0);
+
 		if (inRotation) {
 			tmp1 = configuracion[start+7];
 			configuracion[start+7] = configuracion[start+22];
@@ -346,8 +359,10 @@ void xAxisRotation(char* configuracion, int start, int times, int inRotation) {
 
 		if (!inRotation) {
 			if (start == 13) faceRotation(configuracion, 23);
-			else faceRotation(configuracion, 13);
+			else for (int j = 1; j <= 3; j++) faceRotation(configuracion, 13);
 		}
+
+		faceMirror(configuracion, 0);
 	}
 }
 
@@ -385,7 +400,7 @@ void yAxisRotation(char* configuracion, int start, int times, int inRotation) {
 
 		if (!inRotation) {
 			if (start == 6) faceRotation(configuracion, 8);
-			else faceRotation(configuracion, 33);
+			else for (int j = 1; j <= 3; j++) faceRotation(configuracion, 33);
 		}
 	}
 }
@@ -394,6 +409,7 @@ void fzAxisRotation(char* configuracion, int start, int times, int inRotation) {
 	char tmp1;
 
 	for (int i = 1; i <= times; i++) {
+		faceMirror(configuracion, -15);
 
 		tmp1 = configuracion[start+37];
 		configuracion[start+37] = configuracion[start+28];
@@ -411,6 +427,8 @@ void fzAxisRotation(char* configuracion, int start, int times, int inRotation) {
 			if (start == 5) faceRotation(configuracion, 18);
 			else faceRotation(configuracion, 28);
 		}
+
+		faceMirror(configuracion, -15);
 	}
 }
 
@@ -418,6 +436,8 @@ void fizAxisRotation(char* configuracion, int start, int times, int inRotation) 
 	char tmp1;
 
 	for (int i = 1; i <= times; i++) {
+		faceMirror(configuracion, -15);
+
 		if (inRotation) {
 			tmp1 = configuracion[start+7];
 			configuracion[start+7] = configuracion[start+56];
@@ -445,6 +465,8 @@ void fizAxisRotation(char* configuracion, int start, int times, int inRotation) 
 			configuracion[start+17] = configuracion[start+61];
 			configuracion[start+61] = tmp1;
 		}
+
+		faceMirror(configuracion, -15);
 	}
 }
 
@@ -452,6 +474,8 @@ void bzAxisRotation(char* configuracion, int start, int times, int inRotation) {
 	char tmp1;
 
 	for (int i = 1; i <= times; i++) {
+
+		faceMirror(configuracion, -15);
 
 		tmp1 = configuracion[start+37];
 		configuracion[start+37] = configuracion[start+115];
@@ -470,6 +494,7 @@ void bzAxisRotation(char* configuracion, int start, int times, int inRotation) {
 			else faceRotation(configuracion, 28);
 		}
 
+		faceMirror(configuracion, -15);
 	}
 }
 
@@ -477,6 +502,8 @@ void bizAxisRotation(char* configuracion, int start, int times, int inRotation) 
 	char tmp1;
 
 	for (int i = 1; i <= times; i++) {
+		faceMirror(configuracion, -15);
+
 		if (inRotation) {
 			tmp1 = configuracion[start+7];
 			configuracion[start+7] = configuracion[start+85];
@@ -504,6 +531,8 @@ void bizAxisRotation(char* configuracion, int start, int times, int inRotation) 
 			configuracion[start+17] = configuracion[start+30];
 			configuracion[start+30] = tmp1;
 		}
+		
+		faceMirror(configuracion, -15);
 	}
 }
 
@@ -528,6 +557,34 @@ void faceRotation(char* configuracion, int start) {
 	configuracion[start+60] = configuracion[start+61];
 	configuracion[start+61] = configuracion[start+31];
 	configuracion[start+31] = tmp1;
+}
+
+void faceMirror(char* configuracion, int start){
+	char tmp1;
+
+	tmp1 = configuracion[start+28];
+	configuracion[start+28] = configuracion[start+29];
+	configuracion[start+29] = tmp1;
+
+	tmp1 = configuracion[start+57];
+	configuracion[start+57] = configuracion[start+60];
+	configuracion[start+60] = tmp1;
+
+	tmp1 = configuracion[start+58];
+	configuracion[start+58] = configuracion[start+59];
+	configuracion[start+59] = tmp1;
+
+	tmp1 = configuracion[start+87];
+	configuracion[start+87] = configuracion[start+90];
+	configuracion[start+90] = tmp1;
+
+	tmp1 = configuracion[start+88];
+	configuracion[start+88] = configuracion[start+89];
+	configuracion[start+89] = tmp1;
+
+	tmp1 = configuracion[start+118];
+	configuracion[start+118] = configuracion[start+119];
+	configuracion[start+119] = tmp1;
 }
 
 /****************************************

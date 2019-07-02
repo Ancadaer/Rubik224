@@ -14,10 +14,16 @@ compile:
 	bison -o $(FUENTE).tab.c $(FUENTE).y -yd
 	gcc -o $(FUENTE) lex.yy.c $(FUENTE).tab.c -lfl -ly
 
-run:
-	#./$(FUENTE)
+run: 
+	./$(FUENTE) 
+
+t1:
 	./$(FUENTE) < $(PRUEBA1)
+	
+t2:
 	./$(FUENTE) < $(PRUEBA2)
+
+t3:
 	./$(FUENTE) < $(PRUEBA3)
 
 clean:

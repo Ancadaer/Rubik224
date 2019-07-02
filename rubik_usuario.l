@@ -39,6 +39,7 @@ di'           {return DIPRIME;}
 di            {return DI;}
 d'            {return DPRIME;}
 d             {return D;}
+permutacionT  {return TPERM;}
 
 {entero}      {yylval.valInt = atoi(yytext); return TIMES;}
 {file}        {yylval.valString = yytext; return MYFILE;}

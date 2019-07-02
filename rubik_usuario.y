@@ -69,7 +69,7 @@ char * file;
 	int valInt;
 }
 %error-verbose
-%token <valString> MOVE EXITR SCRAMBLE SOLVED SOLVE RESET CREATE
+%token <valString> MOVE EXITR SCRAMBLE RESET CREATE
 %token <valString> UIPRIME UI UPRIME U RIPRIME RI RPRIME R BIPRIME BI BPRIME B
 %token <valString> LIPRIME LI LPRIME L FIPRIME FI FPRIME F DIPRIME DI DPRIME D TPERM
 %token <valString> MYFILE
@@ -88,8 +88,6 @@ lista_cmds : cmd lista_cmds
 cmd : CREATE MYFILE {if (!exitsFile($2)) create224Configuration($2); else yyerrorCmd("No se puede crear el fichero, ya existe.\n");}
 		|RESET MYFILE {if (exitsFile($2)) create224Configuration($2); else yyerrorCmd("No se puede resetear el fichero, no existe.\n");}
 		|SCRAMBLE scr
-		|SOLVED MYFILE
-		|SOLVE MYFILE
 		|MOVE MYFILE {file = strdup($2);} lista_movs
 		|EXITR {exitRubik();}
 		|error {if (!error) yyerrorCmd("El comando no existe.");}
@@ -240,11 +238,11 @@ void diPrimeMove(char * file) {
 }
 
 void dMove(char * file) {
-	movement(file, 66, 3, 2, 0, 26);
+	movement(file, 96, 3, 2, 0, 26);
 }
 
 void dPrimeMove(char * file) {
-	movement(file, 66, 1, 2, 0, 26);
+	movement(file, 96, 1, 2, 0, 26);
 }
 
 // Eje z
@@ -314,7 +312,7 @@ void movement(char* file, int start, int times, int axis, int inRotation, int ch
 		}
 		printConfiguracion(configuracion, file);
 	}
-	else printf("\nMovement not available. \n");
+	else printf("\nMovement not available. \n\n");
 
 	for (int i = 0; i < 200; i++) configuracion[i] = '\0';
 }
@@ -491,7 +489,7 @@ void bzAxisRotation(char* configuracion, int start, int times, int inRotation) {
 
 		if (!inRotation) {
 			if (start == 5) faceRotation(configuracion, 18);
-			else faceRotation(configuracion, 28);
+			else for (int j = 1; j <= 3; j++) faceRotation(configuracion, 28);
 		}
 
 		faceMirror(configuracion, -15);

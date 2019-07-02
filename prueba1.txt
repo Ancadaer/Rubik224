@@ -1,0 +1,3 @@
+create pruebas.txt
+move pruebas.txt f ri fi fi' ri'
+move pruebas.txt permutacionT u permutacionT u u

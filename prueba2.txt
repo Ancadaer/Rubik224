@@ -1,0 +1,2 @@
+reset pruebas.txt
+move pruebas.txt u ri ri d fi fi u ui ri' bi li' ui' li fi ri'

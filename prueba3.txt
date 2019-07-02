@@ -1,0 +1,6 @@
+move pruebas.txt bi bi ri' fi ui' bi bi 
+move pruebas.txt ui li ui' li' ui li ui' li' ui li ui' li' 
+move pruebas.txt ui ri ri ui ui ri ui ui ri ri 
+move pruebas.txt permutacionT ui ui permutacionT ui'
+move pruebas.txt d d u ri ri u ri ri u u 
+move pruebas.txt li li u li li u li li u u ri ri d

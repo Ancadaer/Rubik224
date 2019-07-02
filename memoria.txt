@@ -1,0 +1,58 @@
+Autores: Héctor Rivas Dorado y Raúl Saavedra Campos.
+
+Descripción:
+En esta práctica se busca implementar un juego que simule el funcionamiento
+ de un cubo de Rubik de dimensiones 2x2x4. Este cubo no tiene el mismo número
+ de capas en todas sus dimensiones, por lo que en algunos casos el giro de
+ las capas externas no estará permitido, ya que se pueden bloquear.
+
+ El cubo se presenta en un formato de texto, en el que podemos distinguir
+ seis columnas (una por cada cara) subdivididas en un array de 4x4. Cada
+ posición en este array puede estar ocupada por un color (representado por
+ su inicial en inglés) o por un guión, que indica la ausencia de una pieza en
+ esa posición.
+
+ Las caras del cubo son las siguientes: u (superior), d (inferior), r (derecha),
+ l (izquierda), f (frontal), b (trasera). Realizaremos giros en sentido horario
+ en cada capa utilizando el comando "move" seguido del nombre del fichero con la
+ configuración del cubo y seguido de la lista de movimientos. Los movimientos
+ posibles se identifican con el nombre de la capa, acompañado de 'i' si se trata
+ de un giro interno y seguido por ' si se trata de un giro en sentido antihorario
+ (p.e. "u u' ui ui'" representan todos los giros posibles en la cara superior).
+ Además se incorpora una combinación de movimientos ("permutacionT") que cambia
+ dos piezas en la capa ui y facilita la resolución del cubo.
+
+ La gramática también incorpora sentencias para crear un nuevo fichero con una
+ configuración del cubo, resetear la configuración de un fichero, deshacer el cubo
+ con un número dado de movimientos o salir del modo interactivo en línea de comandos.
+
+ La gramática es bastante directa. Esperamos recibir un comando o una serie de
+ comandos. En la primera fase de reconocimiento buscaremos un token de una
+ de las posibles opciones. Si no encontramos ninguno nos devolverá un error
+ de que el comando no existe. Dentro de algunas de las otras reglas nos podremos
+ encontrar otros errores. Por ejemplo con scramble debemos especificar un numero
+ de movimientos a realizar y un fichero donde hacerlo, si nos falta alguno de estos
+ datos nos dará el error oportuno. Otro ejemplo es que si intentamos crear un fichero
+ con una configuracion pero el fichero ya existe nos lo dirá.
+
+
+
+
+Archivos:
+Se utilizan dos archivos para el funcionamiento del cubo: rubik_usuario.l y
+rubik_usuario.y. El primero se corresponde al analizador léxico y el segundo al
+analizador sintáctico, encargado también de ejecutar todo el código para la
+manipulación del cubo.
+
+Ya comentamos el .y en el anterior apartado. En cuanto a rubik_usuario.l, reconoce
+los tokes literales de los nombres de los comandos y los devuelve. Tambien reconoce
+numeros enteros para el comando scramble así como todos los posibles movimientos
+a realizar en el cubo.
+
+Se adjunta un archivo Makefile para la compilación del programa, así como la
+ejecución de las pruebas. Existen tres archivos de prueba, que se podrán ejecutar
+con las instrucciones "make run1", "make run2" y "make run3" (se recomienda ejecutarlos
+en este orden). El primero de ellos creará un fichero con la configuración del cubo
+y realizará algunos movimientos de prueba. La segunda prueba resetea el cubo al estado
+original y lo deshace. La tercera prueba contiene todos los pasos para la resolución
+del cubo (siempre que se mezcle con la segunda prueba).
